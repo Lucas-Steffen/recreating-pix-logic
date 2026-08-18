@@ -1,8 +1,31 @@
-[Português](README.md) | [English](README.en.md)
+<div align="center">
 
 # Recreating Pix Logic
 
 Study project that recreates, in a simplified way, the logic behind Pix, the Brazilian instant payment system that became a world reference in real time transfers.
+
+[Português](README.md) · [English](README.en.md)
+
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=for-the-badge&logo=nestjs&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![BullMQ](https://img.shields.io/badge/BullMQ-FF4438?style=for-the-badge)
+
+</div>
+
+---
+
+## Table of contents
+
+- [Motivation](#motivation)
+- [Roadmap](#roadmap)
+- [Current status](#current-status)
+- [Stack](#stack)
+- [Videos watched](#videos-watched)
+- [Documentation](#documentation)
+- [Author](#author)
 
 ## Motivation
 
@@ -31,10 +54,12 @@ Early stage project, basic [NestJS](https://nestjs.com/) scaffold.
 
 ## Stack
 
-- Node.js + TypeScript
-- NestJS
-- Postgres + TypeORM
-- Redis + BullMQ
+| Layer | Technology |
+| --- | --- |
+| Language | Node.js + TypeScript |
+| Framework | NestJS |
+| Database | PostgreSQL + TypeORM |
+| Queue / cache | Redis + BullMQ |
 
 ## Videos watched
 
@@ -53,3 +78,15 @@ List of docs and articles read during development.
 - [TypeORM](https://typeorm.io/)
 - [Redis](https://redis.io/docs/latest/)
 - [BullMQ](https://docs.bullmq.io/)
+
+## Author
+
+<div align="center">
+
+Built by **Lucas Steffen**
+
+[![Instagram](https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white)](https://www.instagram.com/steffen_lucasgabriel/)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Lucas-Steffen)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/lucasteffen/)
+
+</div>
