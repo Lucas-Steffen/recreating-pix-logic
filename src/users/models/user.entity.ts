@@ -1,4 +1,4 @@
-import { baseEntity } from 'src/shared/base.entity';
+import { baseEntity } from 'src/shared/entities/base.entity';
 import { Column, Entity } from 'typeorm';
 
 @Entity({ schema: 'public', name: 'users' })
@@ -14,6 +14,7 @@ export class users extends baseEntity {
     type: 'varchar',
     length: 255,
     nullable: false,
+    unique: true,
   })
   email!: string;
 
@@ -23,4 +24,17 @@ export class users extends baseEntity {
     nullable: false,
   })
   password!: string;
+
+  @Column({
+    type: 'varchar',
+    length: 13,
+    nullable: false
+  })
+  phone!: string
+
+  @Column({
+    type: 'boolean',
+    default: true
+  })
+  active!: boolean
 }
