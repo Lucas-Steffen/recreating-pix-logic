@@ -20,11 +20,7 @@ Projeto de estudo que recria, de forma simplificada, a lógica por trás do Pix,
 ## Índice
 
 - [Motivação](#motivação)
-- [Roadmap](#roadmap)
-- [Status atual](#status-atual)
-- [Stack](#stack)
-- [Vídeos assistidos](#vídeos-assistidos)
-- [Documentações](#documentações)
+- [Documentação do projeto](#documentação-do-projeto)
 - [Autor](#autor)
 
 ## Motivação
@@ -37,47 +33,12 @@ O objetivo aqui não é construir um produto financeiro real, e sim usar o domí
 - Imutabilidade: modelar transferências, débitos e créditos como eventos imutáveis, evitando estados mutáveis compartilhados que geram condição de corrida.
 - Como o Pix funciona por baixo dos panos: entender, na medida do possível, os fluxos e garantias que tornam o Pix uma tecnologia confiável e reconhecida internacionalmente.
 
-## Roadmap
+## Documentação do projeto
 
-O desenvolvimento é incremental, adicionando complexidade aos poucos:
-
-- [ ] Modelagem inicial de contas e saldo
-- [ ] Débitos e créditos como operações imutáveis
-- [ ] Transferências entre contas (Pix simplificado)
-- [ ] Fila de processamento de transações
-- [ ] Testes de carga e concorrência (milhares de requisições simultâneas)
-- [ ] Estratégias de consistência e idempotência
-
-## Status atual
-
-Projeto em estágio inicial, scaffold básico em [NestJS](https://nestjs.com/).
-
-## Stack
-
-| Camada | Tecnologia |
-| --- | --- |
-| Linguagem | Node.js + TypeScript |
-| Framework | NestJS |
-| Banco de dados | PostgreSQL + TypeORM |
-| Fila / cache | Redis + BullMQ |
-
-## Vídeos assistidos
-
-Lista de vídeos usados como referência durante o desenvolvimento.
-
-- 
-
-## Documentações
-
-Lista de documentações e artigos lidos durante o desenvolvimento.
-
-- [Concurrency-VS-Parallelism](https://www.geeksforgeeks.org/operating-systems/difference-between-concurrency-and-parallelism/)
-- [DRY](https://www.geeksforgeeks.org/software-engineering/dont-repeat-yourselfdry-in-software-development/)
-- [NestJS](https://docs.nestjs.com/)
-- [TypeScript](https://www.typescriptlang.org/docs/)
-- [TypeORM](https://typeorm.io/)
-- [Redis](https://redis.io/docs/latest/)
-- [BullMQ](https://docs.bullmq.io/)
+- [Requisitos](docs/requisitos.md): escopo, requisitos funcionais e não funcionais.
+- [Arquitetura](docs/arquitetura.md): stack e decisões técnicas.
+- [Planejamento](docs/planejamento.md): status atual e roadmap.
+- [Lógicas](docs/logicas.md): conceitos de engenharia estudados, vídeos e leituras de referência.
 
 ## Autor
 

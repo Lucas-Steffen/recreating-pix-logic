@@ -20,11 +20,7 @@ Study project that recreates, in a simplified way, the logic behind Pix, the Bra
 ## Table of contents
 
 - [Motivation](#motivation)
-- [Roadmap](#roadmap)
-- [Current status](#current-status)
-- [Stack](#stack)
-- [Videos watched](#videos-watched)
-- [Documentation](#documentation)
+- [Project documentation](#project-documentation)
 - [Author](#author)
 
 ## Motivation
@@ -37,47 +33,12 @@ The goal here isn't to build a real financial product, but to use the Pix domain
 - Immutability: modeling transfers, debits and credits as immutable events, avoiding shared mutable state that leads to race conditions.
 - How Pix works under the hood: understanding, as much as possible, the flows and guarantees that make Pix a reliable technology recognized worldwide.
 
-## Roadmap
+## Project documentation
 
-Development is incremental, adding complexity little by little:
-
-- [ ] Initial account and balance modeling
-- [ ] Debits and credits as immutable operations
-- [ ] Transfers between accounts (simplified Pix)
-- [ ] Transaction processing queue
-- [ ] Load and concurrency testing (thousands of simultaneous requests)
-- [ ] Consistency and idempotency strategies
-
-## Current status
-
-Early stage project, basic [NestJS](https://nestjs.com/) scaffold.
-
-## Stack
-
-| Layer | Technology |
-| --- | --- |
-| Language | Node.js + TypeScript |
-| Framework | NestJS |
-| Database | PostgreSQL + TypeORM |
-| Queue / cache | Redis + BullMQ |
-
-## Videos watched
-
-List of videos used as reference during development.
-
-- 
-
-## Documentation
-
-List of docs and articles read during development.
-
-- [Concurrency-VS-Parallelism](https://www.geeksforgeeks.org/operating-systems/difference-between-concurrency-and-parallelism/)
-- [DRY](https://www.geeksforgeeks.org/software-engineering/dont-repeat-yourselfdry-in-software-development/)
-- [NestJS](https://docs.nestjs.com/)
-- [TypeScript](https://www.typescriptlang.org/docs/)
-- [TypeORM](https://typeorm.io/)
-- [Redis](https://redis.io/docs/latest/)
-- [BullMQ](https://docs.bullmq.io/)
+- [Requirements](docs/requirements.md): scope, functional and non functional requirements.
+- [Architecture](docs/architecture.md): stack and technical decisions.
+- [Planning](docs/planning.md): current status and roadmap.
+- [Logic](docs/logic.md): engineering concepts studied, videos and reference reading.
 
 ## Author
 
