@@ -1,5 +1,6 @@
+import { Roles } from 'src/roles/models/roles.entity';
 import { baseEntity } from 'src/shared/entities/base.entity';
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, ManyToMany } from 'typeorm';
 
 @Entity({ schema: 'public', name: 'users' })
 export class users extends baseEntity {
@@ -8,7 +9,7 @@ export class users extends baseEntity {
     length: 255,
     nullable: false,
   })
-  name!: string;
+  declare name: string;
 
   @Column({
     type: 'varchar',
@@ -16,25 +17,28 @@ export class users extends baseEntity {
     nullable: false,
     unique: true,
   })
-  email!: string;
+  declare email: string;
 
   @Column({
     type: 'varchar',
     length: 72, // BCrypt truncates input after 72 characters, so anything beyond that doesn't affect the hash
     nullable: false,
   })
-  password!: string;
+  declare password: string;
 
   @Column({
     type: 'varchar',
     length: 13,
     nullable: false
   })
-  phone!: string
+  declare phone: string
 
   @Column({
     type: 'boolean',
     default: true
   })
-  active!: boolean
+  declare active: boolean
+
+  @ManyToMany(() => Roles, (roles) => roles.usuarios)
+  declare roles: Roles[];
 }
