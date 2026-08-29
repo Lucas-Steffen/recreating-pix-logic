@@ -8,14 +8,14 @@ export class Permissions extends baseEntity {
         type: 'varchar',
         length: 255
     })
-    declare action: string
+    action: string
 
     @Column({
         type: 'varchar',
         length: 255
     })
-    declare subject: string;
+    subject: string;
 
     @ManyToMany(() => Roles, (roles) => roles.permissions)
-    declare roles: Roles[]
+    roles: Roles[]
 }

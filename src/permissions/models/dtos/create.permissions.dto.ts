@@ -6,12 +6,12 @@ export class createPermissionsDto {
     @IsEnum(Action)
     @IsNotEmpty()
     @ApiProperty({ enum: Action })
-    declare action: Action;
+    action: Action;
 
     @IsString()
     @IsNotEmpty()
     @ApiProperty()
-    declare subject: string;
+    subject: string;
 
     @IsArray()
     @IsString({ each: true })
@@ -20,5 +20,5 @@ export class createPermissionsDto {
         type: [String],
         description: 'IDs of the roles to link this permission to.'
     })
-    declare roleIds: string[];
+    roleIds: string[];
 }

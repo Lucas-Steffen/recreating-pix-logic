@@ -24,6 +24,7 @@
     "typeorm:generate": "npm run typeorm:run && node -e \"const {execSync}=require('child_process'),name=process.env.npm_config_name;if(!name){console.error('Use: npm run typeorm:generate --name=<nome>');process.exit(1);}execSync('npx typeorm migration:generate -d ./dist/database/data-source.js src/database/migrations/'+name,{stdio:'inherit'})\" && npm run typeorm:run"
   },
   "dependencies": {
+    "@casl/ability": "^7.0.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.0.1",
@@ -31,6 +32,7 @@
     "@nestjs/swagger": "^11.4.7",
     "@nestjs/typeorm": "^11.0.3",
     "bcrypt": "^6.0.0",
+    "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
     "dotenv": "^17.4.2",
     "pg": "^8.23.0",

@@ -1,9 +1,11 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permissions } from './models/permissions.entity';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, ILike, Repository } from 'typeorm';
 import { Roles } from 'src/roles/models/roles.entity';
 import { createPermissionsDto } from './models/dtos/create.permissions.dto';
+import { QueryPermissionsDto } from './models/dtos/query.permissions.dto';
+import { PaginatedResponseDto } from 'src/shared/models/dtos/paginated-response.dto';
 
 @Injectable()
 export class PermissionsService {
@@ -66,5 +68,20 @@ export class PermissionsService {
         }
 
         return permission;
+    }
+
+    async getPermissions(query: QueryPermissionsDto) {
+        const where: FindOptionsWhere<Permissions> = {
+            ...(query.action && { action: query.action }),
+            ...(query.subject && { subject: ILike(`%${this.normalizeString(query.subject)}%`) }),
+        }
+
+        const [data, total] = await this.permissionsRepository.findAndCount({
+            where,
+            skip: (query.page - 1) * query.size,
+            take: query.size,
+        })
+
+        return new PaginatedResponseDto(data, total, query.page, query.size)
     }
 }

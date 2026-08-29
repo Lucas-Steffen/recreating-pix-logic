@@ -10,13 +10,13 @@ export class Roles extends baseEntity {
         length: 255,
         nullable: false
     })
-    declare role: string;
+    role: string;
 
     @ManyToMany(() => users, (usuarios) => usuarios.roles)
     @JoinTable()
-    declare usuarios: users[];
+    usuarios: users[];
 
     @ManyToMany(() => Permissions, (permissions) => permissions.roles)
     @JoinTable()
-    declare permissions: Permissions[];
+    permissions: Permissions[];
 }

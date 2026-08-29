@@ -9,7 +9,7 @@ export class users extends baseEntity {
     length: 255,
     nullable: false,
   })
-  declare name: string;
+  name: string;
 
   @Column({
     type: 'varchar',
@@ -17,28 +17,28 @@ export class users extends baseEntity {
     nullable: false,
     unique: true,
   })
-  declare email: string;
+  email: string;
 
   @Column({
     type: 'varchar',
     length: 72, // BCrypt truncates input after 72 characters, so anything beyond that doesn't affect the hash
     nullable: false,
   })
-  declare password: string;
+  password: string;
 
   @Column({
     type: 'varchar',
     length: 13,
     nullable: false
   })
-  declare phone: string
+  phone: string
 
   @Column({
     type: 'boolean',
     default: true
   })
-  declare active: boolean
+  active: boolean
 
   @ManyToMany(() => Roles, (roles) => roles.usuarios)
-  declare roles: Roles[];
+  roles: Roles[];
 }
