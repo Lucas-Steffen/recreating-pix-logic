@@ -1,11 +1,12 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Permissions } from './models/permissions.entity';
-import { DataSource, FindOptionsWhere, ILike, Repository } from 'typeorm';
+import { DataSource, FindOptionsWhere, ILike, In, Not, Repository } from 'typeorm';
 import { Roles } from 'src/roles/models/roles.entity';
 import { createPermissionsDto } from './models/dtos/create.permissions.dto';
 import { QueryPermissionsDto } from './models/dtos/query.permissions.dto';
 import { PaginatedResponseDto } from 'src/shared/models/dtos/paginated-response.dto';
+import { updatePermissionDto } from './models/dtos/update.permissions.dto';
 
 @Injectable()
 export class PermissionsService {
@@ -83,5 +84,69 @@ export class PermissionsService {
         })
 
         return new PaginatedResponseDto(data, total, query.page, query.size)
+    }
+
+    async updatePermission(id: string, body: updatePermissionDto) {
+        return this.dataSource.transaction(async (manager) => {
+            const permissionsRepository = manager.getRepository(Permissions);
+            const rolesRepository = manager.getRepository(Roles);
+
+            const permission = await permissionsRepository.findOne({
+                where: { id },
+                relations: { roles: true },
+            });
+
+            if (!permission) {
+                throw new NotFoundException(`Permission ${id} not found`);
+            }
+
+            const action = body.action ?? permission.action;
+            const subject = body.subject ? this.normalizeString(body.subject) : permission.subject;
+
+            if (body.action || body.subject) {
+                const existing = await permissionsRepository.findOne({
+                    where: { action, subject, id: Not(id) },
+                });
+
+                if (existing) {
+                    throw new ConflictException(
+                        `Permission ${action} on ${subject} already exists`
+                    );
+                }
+            }
+
+            permission.action = action;
+            permission.subject = subject;
+            await permissionsRepository.save(permission);
+
+            if (body.roleIds) {
+                const currentRoleIds = permission.roles.map((role) => role.id);
+                const roleIds = Array.from(new Set([...currentRoleIds, ...body.roleIds]));
+
+                const roles = await rolesRepository.find({
+                    where: { id: In(roleIds) },
+                    relations: { permissions: true },
+                });
+
+                const foundRoleIds = new Set(roles.map((role) => role.id));
+                const missingRoleId = body.roleIds.find((roleId) => !foundRoleIds.has(roleId));
+                if (missingRoleId) {
+                    throw new NotFoundException(`Role ${missingRoleId} not found`);
+                }
+
+                for (const role of roles) {
+                    role.permissions = body.roleIds.includes(role.id)
+                        ? [...role.permissions.filter((p) => p.id !== permission.id), permission]
+                        : role.permissions.filter((p) => p.id !== permission.id);
+                }
+
+                await rolesRepository.save(roles);
+            }
+
+            return permissionsRepository.findOne({
+                where: { id },
+                relations: { roles: true },
+            });
+        });
     }
 }
