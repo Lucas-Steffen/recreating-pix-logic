@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { PermissionsService } from './permissions.service';
 import { AppAbility, CheckPolicies } from 'src/auth/decorators/check.policies.decorator';
 import { Action } from 'src/auth/models/enums/casl.action';
@@ -28,5 +28,11 @@ export class PermissionsController {
     @CheckPolicies((ability: AppAbility) => ability.can(Action.Manage, "manage"))
     async updatePermission(@Param('id') id: string, @Body() body: updatePermissionDto){
         return this.permissionsService.updatePermission(id, body)
+    }
+
+    @Delete(':id')
+    @CheckPolicies((ability: AppAbility) => ability.can(Action.Manage, "manage"))
+    async deletePermission(@Param('id') id: string){
+        return this.permissionsService.deletePermission(id)
     }
 }

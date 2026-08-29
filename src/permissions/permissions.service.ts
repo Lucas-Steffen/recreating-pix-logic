@@ -149,4 +149,20 @@ export class PermissionsService {
             });
         });
     }
+
+    async deletePermission(id: string){
+        const existingPermission = await this.permissionsRepository.findOneOrFail({
+            where: {
+                id
+            }
+        })
+
+        if(!existingPermission){
+            throw new NotFoundException(`Permission ${id} not found`)
+        }
+
+        existingPermission.deletedAt = new Date()
+
+        await this.permissionsRepository.save(existingPermission)
+    }
 }
