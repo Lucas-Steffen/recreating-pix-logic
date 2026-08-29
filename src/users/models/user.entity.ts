@@ -1,8 +1,10 @@
+import { Auditable } from 'src/logs/decorators/logs.decorator';
 import { Roles } from 'src/roles/models/roles.entity';
 import { baseEntity } from 'src/shared/entities/base.entity';
 import { Column, Entity, ManyToMany } from 'typeorm';
 
 @Entity({ schema: 'public', name: 'users' })
+@Auditable({ entity: 'users', ignore: ['password']})
 export class users extends baseEntity {
   @Column({
     type: 'varchar',
