@@ -1,23 +1,23 @@
-import { Auditable } from "src/logs/decorators/logs.decorator";
-import { Roles } from "src/roles/models/roles.entity";
-import { baseEntity } from "src/shared/entities/base.entity";
-import { Column, Entity, ManyToMany } from "typeorm";
+import { Auditable } from 'src/logs/decorators/logs.decorator';
+import { Roles } from 'src/roles/models/roles.entity';
+import { baseEntity } from 'src/shared/entities/base.entity';
+import { Column, Entity, ManyToMany } from 'typeorm';
 
-@Entity({ schema: 'public', name: 'permissions'})
-@Auditable({entity: 'permissions'})
+@Entity({ schema: 'public', name: 'permissions' })
+@Auditable({ entity: 'permissions' })
 export class Permissions extends baseEntity {
-    @Column({
-        type: 'varchar',
-        length: 255
-    })
-    action: string
+  @Column({
+    type: 'varchar',
+    length: 255,
+  })
+  action: string;
 
-    @Column({
-        type: 'varchar',
-        length: 255
-    })
-    subject: string;
+  @Column({
+    type: 'varchar',
+    length: 255,
+  })
+  subject: string;
 
-    @ManyToMany(() => Roles, (roles) => roles.permissions)
-    roles: Roles[]
+  @ManyToMany(() => Roles, (roles) => roles.permissions)
+  roles: Roles[];
 }

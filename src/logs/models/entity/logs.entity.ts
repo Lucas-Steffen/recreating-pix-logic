@@ -76,6 +76,11 @@ export class Logs extends baseEntity {
   httpPath: string | null;
 
   @Expose()
-  @Column({ name: 'observation', type: 'varchar', length: 1000, nullable: true })
+  @Column({
+    name: 'observation',
+    type: 'varchar',
+    length: 1000,
+    nullable: true,
+  })
   observation: string | null; // optional custom description
 }

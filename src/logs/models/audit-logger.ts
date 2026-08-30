@@ -39,7 +39,9 @@ export const AuditLogger = {
         // returns for the "before" (RelationIdLoader) vs "after" (repository.find) queries.
         result[key] = value
           .map((item) =>
-            item && typeof item === 'object' && 'id' in item ? { id: item.id } : item,
+            item && typeof item === 'object' && 'id' in item
+              ? { id: item.id }
+              : item,
           )
           .sort((a, b) => {
             const aKey = String(a && typeof a === 'object' ? a.id : a);
@@ -55,9 +57,15 @@ export const AuditLogger = {
     return result;
   },
 
-  calculateDiff(previous: Record<string, any>, current: Record<string, any>): StateDiff {
+  calculateDiff(
+    previous: Record<string, any>,
+    current: Record<string, any>,
+  ): StateDiff {
     const diff: StateDiff = {};
-    const keys = new Set([...Object.keys(previous ?? {}), ...Object.keys(current ?? {})]);
+    const keys = new Set([
+      ...Object.keys(previous ?? {}),
+      ...Object.keys(current ?? {}),
+    ]);
 
     for (const key of keys) {
       const from = previous?.[key];

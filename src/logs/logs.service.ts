@@ -11,7 +11,10 @@ export class LogsService {
   ) {}
 
   // Full history of one specific record
-  async getEntityHistory(entityName: string, entityId: string): Promise<Logs[]> {
+  async getEntityHistory(
+    entityName: string,
+    entityId: string,
+  ): Promise<Logs[]> {
     return this.auditRepository.find({
       where: { entityName, entityId },
       order: { createdAt: 'DESC' },

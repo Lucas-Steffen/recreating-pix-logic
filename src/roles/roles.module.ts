@@ -8,6 +8,6 @@ import { Permissions } from 'src/permissions/models/permissions.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([Roles, Permissions])],
   controllers: [RolesController],
-  providers: [RolesService]
+  providers: [RolesService],
 })
 export class RolesModule {}

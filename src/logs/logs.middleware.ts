@@ -10,11 +10,11 @@ export class LogsMiddleware implements NestMiddleware {
       (req.headers['x-correlation-id'] as string) ?? randomUUID();
 
     res.setHeader('x-correlation-id', correlationId);
-    
+
     LogsContext.run(
       {
         correlationId,
-        actorId: null, 
+        actorId: null,
         actorRole: null,
         actorName: null,
         ipAddress: req.ip,

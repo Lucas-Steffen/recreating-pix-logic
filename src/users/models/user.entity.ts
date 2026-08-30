@@ -4,7 +4,7 @@ import { baseEntity } from 'src/shared/entities/base.entity';
 import { Column, Entity, ManyToMany } from 'typeorm';
 
 @Entity({ schema: 'public', name: 'users' })
-@Auditable({ entity: 'users', ignore: ['password']})
+@Auditable({ entity: 'users', ignore: ['password'] })
 export class users extends baseEntity {
   @Column({
     type: 'varchar',
@@ -31,15 +31,15 @@ export class users extends baseEntity {
   @Column({
     type: 'varchar',
     length: 13,
-    nullable: false
+    nullable: false,
   })
-  phone: string
+  phone: string;
 
   @Column({
     type: 'boolean',
-    default: true
+    default: true,
   })
-  active: boolean
+  active: boolean;
 
   @ManyToMany(() => Roles, (roles) => roles.usuarios)
   roles: Roles[];

@@ -10,113 +10,120 @@ import { updateRoleDto } from './models/dtos/update.role.dto';
 
 @Injectable()
 export class RolesService {
-    constructor(
-        @InjectRepository(Roles)
-        private readonly rolesRepository: Repository<Roles>,
-        @InjectRepository(Permissions)
-        private readonly permissionsRepository: Repository<Permissions>,
-        private readonly dataSource: DataSource
-    ) { }
+  constructor(
+    @InjectRepository(Roles)
+    private readonly rolesRepository: Repository<Roles>,
+    @InjectRepository(Permissions)
+    private readonly permissionsRepository: Repository<Permissions>,
+    private readonly dataSource: DataSource,
+  ) {}
 
-    async getRoles(query: QueryRolesDto) {
-        const where: FindOptionsWhere<Roles> = {
-            ...(query.role && { role: query.role }),
-            ...(query.id && { id: query.role })
-        }
+  async getRoles(query: QueryRolesDto) {
+    const where: FindOptionsWhere<Roles> = {
+      ...(query.role && { role: query.role }),
+      ...(query.id && { id: query.role }),
+    };
 
-        const [data, total] = await this.rolesRepository.findAndCount({
-            where,
-            skip: (query.page - 1) * query.size,
-            take: query.size
-        })
+    const [data, total] = await this.rolesRepository.findAndCount({
+      where,
+      skip: (query.page - 1) * query.size,
+      take: query.size,
+    });
 
-        return new PaginatedResponseDto(data, total, query.page, query.size)
-    }
+    return new PaginatedResponseDto(data, total, query.page, query.size);
+  }
 
-    async createRole(body: createRoleDto){
-        const role = await this.rolesRepository.save(
-            this.rolesRepository.create({ role: body.name })
-        );
+  async createRole(body: createRoleDto) {
+    const role = await this.rolesRepository.save(
+      this.rolesRepository.create({ role: body.name }),
+    );
 
-        if(body.permissionIds?.length) {
-            const permissions = await Promise.all(
-                body.permissionIds.map(async (permissionId) => {
-                    const permission = await this.permissionsRepository.findOne({ 
-                        where: { 
-                            id: permissionId 
-                        }
-                    });
-                    if(!permission) throw new NotFoundException(`Permission ${permissionId} not found`);
-                    return permission
-                })
-            );
-
-            role.permissions = permissions;
-            await this.rolesRepository.save(role);
-        }
-
-        return this.rolesRepository.findOne({
+    if (body.permissionIds?.length) {
+      const permissions = await Promise.all(
+        body.permissionIds.map(async (permissionId) => {
+          const permission = await this.permissionsRepository.findOne({
             where: {
-                id: role.id,
+              id: permissionId,
             },
-            relations: { 
-                permissions: true 
-            }
-        })
+          });
+          if (!permission)
+            throw new NotFoundException(`Permission ${permissionId} not found`);
+          return permission;
+        }),
+      );
+
+      role.permissions = permissions;
+      await this.rolesRepository.save(role);
     }
 
-    async updateRole(id: string, body: updateRoleDto) {
-        return this.dataSource.transaction(async (manager) => {
-            const rolesRepository = manager.getRepository(Roles);
-            const permissionsRepository = manager.getRepository(Permissions);
+    return this.rolesRepository.findOne({
+      where: {
+        id: role.id,
+      },
+      relations: {
+        permissions: true,
+      },
+    });
+  }
 
-            const role = await rolesRepository.findOne({
-                where: { id },
-                relations: { permissions: true },
-            });
+  async updateRole(id: string, body: updateRoleDto) {
+    return this.dataSource.transaction(async (manager) => {
+      const rolesRepository = manager.getRepository(Roles);
+      const permissionsRepository = manager.getRepository(Permissions);
 
-            if (!role) {
-                throw new NotFoundException(`Role ${id} not found`);
-            }
+      const role = await rolesRepository.findOne({
+        where: { id },
+        relations: { permissions: true },
+      });
 
-            if (body.name) {
-                role.role = body.name;
-            }
+      if (!role) {
+        throw new NotFoundException(`Role ${id} not found`);
+      }
 
-            if (body.permissionIds) {
-                const permissions = await permissionsRepository.find({
-                    where: { id: In(body.permissionIds) },
-                });
+      if (body.name) {
+        role.role = body.name;
+      }
 
-                const foundPermissionIds = new Set(permissions.map((permission) => permission.id));
-                const missingPermissionId = body.permissionIds.find((permissionId) => !foundPermissionIds.has(permissionId));
-                if (missingPermissionId) {
-                    throw new NotFoundException(`Permission ${missingPermissionId} not found`);
-                }
-
-                role.permissions = permissions;
-            }
-
-            await rolesRepository.save(role);
-
-            return rolesRepository.findOne({
-                where: { id },
-                relations: { permissions: true },
-            });
+      if (body.permissionIds) {
+        const permissions = await permissionsRepository.find({
+          where: { id: In(body.permissionIds) },
         });
-    }
 
-    async deleteRole(id: string){
-        const existingRole = await this.rolesRepository.findOneByOrFail({
-            id
-        })
-
-        if(!existingRole){
-            throw new NotFoundException(`Role ${id} not found`)
+        const foundPermissionIds = new Set(
+          permissions.map((permission) => permission.id),
+        );
+        const missingPermissionId = body.permissionIds.find(
+          (permissionId) => !foundPermissionIds.has(permissionId),
+        );
+        if (missingPermissionId) {
+          throw new NotFoundException(
+            `Permission ${missingPermissionId} not found`,
+          );
         }
 
-        existingRole.deletedAt = new Date()
+        role.permissions = permissions;
+      }
 
-        await this.rolesRepository.save(existingRole)
+      await rolesRepository.save(role);
+
+      return rolesRepository.findOne({
+        where: { id },
+        relations: { permissions: true },
+      });
+    });
+  }
+
+  async deleteRole(id: string) {
+    const existingRole = await this.rolesRepository.findOneByOrFail({
+      id,
+    });
+
+    if (!existingRole) {
+      throw new NotFoundException(`Role ${id} not found`);
     }
+
+    existingRole.deletedAt = new Date();
+
+    await this.rolesRepository.save(existingRole);
+  }
 }
