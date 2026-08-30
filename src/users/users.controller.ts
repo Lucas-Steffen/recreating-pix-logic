@@ -5,7 +5,5 @@ import { createUserDto } from './models/dtos/create.user.dto';
 
 @Controller('users')
 export class UsersController {
-  constructor(
-    private readonly userService: UsersService
-  ) {}
+  constructor(private readonly userService: UsersService) {}
 }

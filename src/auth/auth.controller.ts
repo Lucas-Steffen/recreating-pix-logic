@@ -7,20 +7,20 @@ import { LoginDto } from './models/dtos/login.dto';
 
 @Controller('auth')
 export class AuthController {
-    constructor(
-        private readonly userService: UsersService,
-        private readonly authService: AuthService
-    ) { }
+  constructor(
+    private readonly userService: UsersService,
+    private readonly authService: AuthService,
+  ) {}
 
-    @Post('signup')
-    @Public()
-    async signup(@Body() body: createUserDto) {
-        return this.userService.signup(body);
-    }
+  @Post('signup')
+  @Public()
+  async signup(@Body() body: createUserDto) {
+    return this.userService.signup(body);
+  }
 
-    @Post('login')
-    @Public()
-    async login(@Body() body: LoginDto){
-        return this.authService.login(body)
-    }
+  @Post('login')
+  @Public()
+  async login(@Body() body: LoginDto) {
+    return this.authService.login(body);
+  }
 }
