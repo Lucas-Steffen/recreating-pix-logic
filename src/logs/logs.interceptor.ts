@@ -15,7 +15,7 @@ export class LogsInterceptor implements NestInterceptor {
 
     if (req.user && store) {
       store.actorId = req.user.id;
-      store.actorName = req.user.nome ?? req.user.name ?? null;
+      store.actorName = req.user.name ?? null;
       // Joins all roles into a single comma-separated string
       // (so no info is lost when the user has more than one role)
       store.actorRole = Array.isArray(req.user.roles)
