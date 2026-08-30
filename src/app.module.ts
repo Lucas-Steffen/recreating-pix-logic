@@ -5,6 +5,7 @@ import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { LogsModule } from './logs/logs.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { LogsModule } from './logs/logs.module';
     RolesModule,
     PermissionsModule,
     LogsModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],
