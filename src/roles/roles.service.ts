@@ -47,7 +47,9 @@ export class RolesService {
             },
           });
           if (!permission)
-            throw new NotFoundException(`Permission ${permissionId} not found`);
+            throw new NotFoundException(
+              `Permission with id "${permissionId}" not found`,
+            );
           return permission;
         }),
       );
@@ -77,7 +79,7 @@ export class RolesService {
       });
 
       if (!role) {
-        throw new NotFoundException(`Role ${id} not found`);
+        throw new NotFoundException(`Role with id "${id}" not found`);
       }
 
       if (body.name) {
@@ -97,7 +99,7 @@ export class RolesService {
         );
         if (missingPermissionId) {
           throw new NotFoundException(
-            `Permission ${missingPermissionId} not found`,
+            `Permission with id "${missingPermissionId}" not found`,
           );
         }
 
@@ -119,7 +121,7 @@ export class RolesService {
     });
 
     if (!existingRole) {
-      throw new NotFoundException(`Role ${id} not found`);
+      throw new NotFoundException(`Role with id "${id}" not found`);
     }
 
     existingRole.deletedAt = new Date();

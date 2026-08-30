@@ -31,7 +31,7 @@ export class UsersService {
     });
 
     if (existingUser) {
-      throw new ConflictException('E-mail already exists');
+      throw new ConflictException(`Email "${body.email}" already exists`);
     }
 
     const role = await this.rolesRepository.findOne({
@@ -41,7 +41,7 @@ export class UsersService {
     });
 
     if (!role) {
-      throw new NotFoundException(`Cannot link ${body.email} to ${body.role}`);
+      throw new NotFoundException(`Role "${body.role}" not found`);
     }
 
     const newUser = new users();
@@ -58,7 +58,7 @@ export class UsersService {
       await this.userRepository.save(newUser);
     } catch (error) {
       if (this.isUniqueEmailViolation(error)) {
-        throw new ConflictException('E-mail already exists');
+        throw new ConflictException(`Email "${body.email}" already exists`);
       }
       throw error;
     }

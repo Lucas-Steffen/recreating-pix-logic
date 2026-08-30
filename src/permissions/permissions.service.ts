@@ -45,7 +45,7 @@ export class PermissionsService {
 
     if (existing) {
       throw new ConflictException(
-        `Permission ${body.action} on ${normalizedSubject} already exists`,
+        `Permission "${body.action}" on "${normalizedSubject}" already exists`,
       );
     }
 
@@ -65,7 +65,7 @@ export class PermissionsService {
           });
 
           if (!role) {
-            throw new NotFoundException(`Role ${roleId} not found`);
+            throw new NotFoundException(`Role with id "${roleId}" not found`);
           }
 
           return role;
@@ -110,7 +110,7 @@ export class PermissionsService {
       });
 
       if (!permission) {
-        throw new NotFoundException(`Permission ${id} not found`);
+        throw new NotFoundException(`Permission with id "${id}" not found`);
       }
 
       const action = body.action ?? permission.action;
@@ -125,7 +125,7 @@ export class PermissionsService {
 
         if (existing) {
           throw new ConflictException(
-            `Permission ${action} on ${subject} already exists`,
+            `Permission "${action}" on "${subject}" already exists`,
           );
         }
       }
@@ -150,7 +150,9 @@ export class PermissionsService {
           (roleId) => !foundRoleIds.has(roleId),
         );
         if (missingRoleId) {
-          throw new NotFoundException(`Role ${missingRoleId} not found`);
+          throw new NotFoundException(
+            `Role with id "${missingRoleId}" not found`,
+          );
         }
 
         for (const role of roles) {
@@ -180,7 +182,7 @@ export class PermissionsService {
     });
 
     if (!existingPermission) {
-      throw new NotFoundException(`Permission ${id} not found`);
+      throw new NotFoundException(`Permission with id "${id}" not found`);
     }
 
     existingPermission.deletedAt = new Date();
