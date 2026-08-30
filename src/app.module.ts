@@ -6,6 +6,7 @@ import { RolesModule } from './roles/roles.module';
 import { PermissionsModule } from './permissions/permissions.module';
 import { LogsModule } from './logs/logs.module';
 import { AuthModule } from './auth/auth.module';
+import { KmsModule } from './kms/kms.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { AuthModule } from './auth/auth.module';
     PermissionsModule,
     LogsModule,
     AuthModule,
+    KmsModule,
   ],
   controllers: [],
   providers: [],
