@@ -12,6 +12,7 @@ import { PermissionsService } from 'src/permissions/permissions.service';
 import { UsersService } from 'src/users/users.service';
 import { Action } from './models/enums/casl.action';
 import { Users } from 'src/users/models/user.entity';
+import { BlindIndexService } from 'src/kms/blind-index.service';
 
 const ADMIN_ROLE_NAME = 'admin';
 const ADMIN_PERMISSION_SUBJECT = 'manage';
@@ -29,12 +30,16 @@ export class AuthService {
     private readonly rolesService: RolesService,
     private readonly permissionsService: PermissionsService,
     private readonly usersService: UsersService,
+    private readonly blindIndexService: BlindIndexService,
   ) {}
 
   async login(body: LoginDto) {
+    const emailBlindIndex = await this.blindIndexService.computeExactIndex(
+      body.email,
+    );
     const existingUser = await this.userRepository.findOne({
       where: {
-        email: body.email,
+        emailBlindIndex,
       },
     });
 
@@ -107,7 +112,11 @@ export class AuthService {
     }
 
     const existingAdmin = await this.userRepository.findOne({
-      where: { email: adminEmail },
+      where: {
+        emailBlindIndex: await this.blindIndexService.computeExactIndex(
+          adminEmail,
+        ),
+      },
     });
 
     if (!existingAdmin) {

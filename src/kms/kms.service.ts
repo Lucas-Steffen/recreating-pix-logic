@@ -16,7 +16,7 @@ export class KmsService {
         });
     }
 
-    async generateDateKey(): Promise<{ plaintextKey: Buffer, encryptedKey: Buffer }>{
+    async generateDataKey(): Promise<{ plaintextKey: Buffer, encryptedKey: Buffer }>{
         const response = await this.client.send(
             new GenerateDataKeyCommand ({ KeyId: process.env.KMS_ENVELOPE_KEY_ID!, KeySpec: "AES_256" })
         )

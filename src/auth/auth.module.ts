@@ -9,6 +9,7 @@ import { PermissionsModule } from 'src/permissions/permissions.module';
 import { Roles } from 'src/roles/models/roles.entity';
 import { Permissions } from 'src/permissions/models/permissions.entity';
 import { Users } from 'src/users/models/user.entity';
+import { KmsModule } from 'src/kms/kms.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { Users } from 'src/users/models/user.entity';
     JwtModule.register({
       secret: process.env.JWT_KEY,
     }),
+    KmsModule,
   ],
   providers: [AuthService],
   controllers: [AuthController],

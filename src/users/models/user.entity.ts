@@ -6,12 +6,24 @@ import { Column, Entity, ManyToMany } from 'typeorm';
 @Entity({ schema: 'public', name: 'users' })
 @Auditable({ entity: 'users', ignore: ['password'] })
 export class Users extends baseEntity {
+  // Name, email and phone live encrypted inside piiCiphertext (KMS envelope
+  // encryption) and are only available in memory after decryption — they are
+  // intentionally not @Column-mapped.
+  name: string;
+  email: string;
+  phone: string;
+
   @Column({
-    type: 'varchar',
-    length: 255,
+    type: 'text',
     nullable: false,
   })
-  name: string;
+  piiCiphertext: string;
+
+  @Column({
+    type: 'text',
+    nullable: false,
+  })
+  dataKeyCiphertext: string;
 
   @Column({
     type: 'varchar',
@@ -19,7 +31,14 @@ export class Users extends baseEntity {
     nullable: false,
     unique: true,
   })
-  email: string;
+  emailBlindIndex: string;
+
+  @Column({
+    type: 'varchar',
+    length: 255,
+    nullable: false,
+  })
+  phoneBlindIndex: string;
 
   @Column({
     type: 'varchar',
@@ -27,13 +46,6 @@ export class Users extends baseEntity {
     nullable: false,
   })
   password: string;
-
-  @Column({
-    type: 'varchar',
-    length: 13,
-    nullable: false,
-  })
-  phone: string;
 
   @Column({
     type: 'boolean',

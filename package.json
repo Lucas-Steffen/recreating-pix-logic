@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "typeorm:run": "npm run build && npx typeorm migration:run -d ./dist/database/data-source.js",
+    "typeorm:run": "npm run build && npx typeorm migration:run -d ./dist/database/data-source.js --transaction=each",
     "typeorm:revert": "npm run build && npx typeorm migration:revert -d ./dist/database/data-source.js",
     "typeorm:create": "node -e \"const {execSync}=require('child_process'),name=process.env.npm_config_name;if(!name){console.error('Use: npm run typeorm:create --name=<nome>');process.exit(1);}execSync('npx typeorm migration:create src/database/migrations/'+name,{stdio:'inherit'})\"",
     "typeorm:generate": "npm run typeorm:run && node -e \"const {execSync}=require('child_process'),name=process.env.npm_config_name;if(!name){console.error('Use: npm run typeorm:generate --name=<nome>');process.exit(1);}execSync('npx typeorm migration:generate -d ./dist/database/data-source.js src/database/migrations/'+name,{stdio:'inherit'})\" && npm run typeorm:run"
