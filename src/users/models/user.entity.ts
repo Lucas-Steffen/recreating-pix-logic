@@ -5,7 +5,7 @@ import { Column, Entity, ManyToMany } from 'typeorm';
 
 @Entity({ schema: 'public', name: 'users' })
 @Auditable({ entity: 'users', ignore: ['password'] })
-export class users extends baseEntity {
+export class Users extends baseEntity {
   @Column({
     type: 'varchar',
     length: 255,
@@ -41,6 +41,6 @@ export class users extends baseEntity {
   })
   active: boolean;
 
-  @ManyToMany(() => Roles, (roles) => roles.usuarios)
+  @ManyToMany(() => Roles, (roles) => roles.users)
   roles: Roles[];
 }

@@ -2,7 +2,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LoginDto } from './models/dtos/login.dto';
 import { Repository } from 'typeorm';
-import { users } from 'src/users/models/user.entity';
 import * as bcrypt from 'bcrypt';
 import { JwtPayload } from 'types';
 import { JwtService } from '@nestjs/jwt';
@@ -12,6 +11,7 @@ import { RolesService } from 'src/roles/roles.service';
 import { PermissionsService } from 'src/permissions/permissions.service';
 import { UsersService } from 'src/users/users.service';
 import { Action } from './models/enums/casl.action';
+import { Users } from 'src/users/models/user.entity';
 
 const ADMIN_ROLE_NAME = 'admin';
 const ADMIN_PERMISSION_SUBJECT = 'manage';
@@ -19,8 +19,8 @@ const ADMIN_PERMISSION_SUBJECT = 'manage';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(users)
-    private readonly userRepository: Repository<users>,
+    @InjectRepository(Users)
+    private readonly userRepository: Repository<Users>,
     @InjectRepository(Roles)
     private readonly rolesRepository: Repository<Roles>,
     @InjectRepository(Permissions)

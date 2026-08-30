@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
-import { users } from './models/user.entity';
+import { Users } from './models/user.entity';
 import { createUserDto } from './models/dtos/create.user.dto';
 import * as bcrypt from 'bcrypt';
 import 'dotenv/config';
@@ -17,8 +17,8 @@ const POSTGRES_UNIQUE_VIOLATION = '23505';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(users)
-    private readonly userRepository: Repository<users>,
+    @InjectRepository(Users)
+    private readonly userRepository: Repository<Users>,
     @InjectRepository(Roles)
     private readonly rolesRepository: Repository<Roles>,
   ) {}
@@ -44,7 +44,7 @@ export class UsersService {
       throw new NotFoundException(`Role "${body.role}" not found`);
     }
 
-    const newUser = new users();
+    const newUser = new Users();
     newUser.name = body.name;
     newUser.email = body.email;
     newUser.phone = body.phone;
@@ -73,5 +73,18 @@ export class UsersService {
       (error.driverError as { code?: string })?.code ===
         POSTGRES_UNIQUE_VIOLATION
     );
+  }
+
+  async findByIdWithRolesAndPermissions(id: string){
+    return this.userRepository.findOne({
+      where: {
+        id
+      },
+      relations: {
+        roles:{
+          permissions: true
+        }
+      }
+    })
   }
 }
