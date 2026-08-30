@@ -175,7 +175,7 @@ export class PermissionsService {
   }
 
   async deletePermission(id: string) {
-    const existingPermission = await this.permissionsRepository.findOneOrFail({
+    const existingPermission = await this.permissionsRepository.findOne({
       where: {
         id,
       },

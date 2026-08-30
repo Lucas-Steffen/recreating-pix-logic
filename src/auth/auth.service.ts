@@ -23,12 +23,12 @@ export class AuthService {
     });
 
     if (!existingUser) {
-      throw new UnauthorizedException(`Email or password invalid!`);
+      throw new UnauthorizedException(`Email or password invalid`);
     }
 
     if (existingUser.active === false) {
       throw new UnauthorizedException(
-        `Your user is inactive. Contact our Relationship center`,
+        `User is inactive. Contact our Relationship Center`,
       );
     }
 
@@ -38,7 +38,7 @@ export class AuthService {
     );
 
     if (!validatePassword) {
-      throw new UnauthorizedException(`Email or password invalid!`);
+      throw new UnauthorizedException(`Email or password invalid`);
     }
 
     const payload: JwtPayload = {

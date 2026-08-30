@@ -116,7 +116,7 @@ export class RolesService {
   }
 
   async deleteRole(id: string) {
-    const existingRole = await this.rolesRepository.findOneByOrFail({
+    const existingRole = await this.rolesRepository.findOneBy({
       id,
     });
 
