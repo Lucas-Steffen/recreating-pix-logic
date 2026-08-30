@@ -135,7 +135,7 @@ export class UsersService {
   async searchUsers(query: searchUsersDto) {
     if (!query.name && !query.email && !query.phone) {
       throw new BadRequestException(
-        'Provide at least one of "name", "email" or "phone" to search',
+        'At least one of "name", "email" or "phone" must be provided to search users',
       );
     }
 

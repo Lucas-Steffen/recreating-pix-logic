@@ -51,7 +51,7 @@ export class PoliciesGuard implements CanActivate {
             : "required for this action";
 
           throw new ForbiddenException(
-            `You do not have the necessary "${permission}" permission to use this route. Request that your administrator assign this permission to your role.`
+            `You do not have the necessary "${permission}" permission to perform this action. Please ask your administrator to grant this permission to your role.`
           )
         }
       }
