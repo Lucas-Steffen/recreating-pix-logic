@@ -35,9 +35,17 @@ export const AuditLogger = {
       if (value === undefined) continue;
       // Collapse loaded relations (single or to-many) to their ID so the snapshot doesn't inflate
       if (Array.isArray(value)) {
-        result[key] = value.map((item) =>
-          item && typeof item === 'object' && 'id' in item ? { id: item.id } : item,
-        );
+        // Sorted so the diff isn't sensitive to the arbitrary row order Postgres
+        // returns for the "before" (RelationIdLoader) vs "after" (repository.find) queries.
+        result[key] = value
+          .map((item) =>
+            item && typeof item === 'object' && 'id' in item ? { id: item.id } : item,
+          )
+          .sort((a, b) => {
+            const aKey = String(a && typeof a === 'object' ? a.id : a);
+            const bKey = String(b && typeof b === 'object' ? b.id : b);
+            return aKey.localeCompare(bKey);
+          });
       } else if (value && typeof value === 'object' && 'id' in value) {
         result[key] = { id: value.id };
       } else {

@@ -1,10 +1,11 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { QueryFailedError, Repository } from 'typeorm';
 import { users } from './models/user.entity';
 import { createUserDto } from './models/dtos/create.user.dto';
 import * as bcrypt from 'bcrypt'
 import 'dotenv/config'
+import { Roles } from 'src/roles/models/roles.entity';
 
 const POSTGRES_UNIQUE_VIOLATION = '23505';
 
@@ -12,7 +13,9 @@ const POSTGRES_UNIQUE_VIOLATION = '23505';
 export class UsersService {
     constructor(
         @InjectRepository(users)
-        private readonly userRepository: Repository<users>
+        private readonly userRepository: Repository<users>,
+        @InjectRepository(Roles)
+        private readonly rolesRepository: Repository<Roles>
     ){}
 
     async signup(body: createUserDto){
@@ -26,6 +29,16 @@ export class UsersService {
             throw new ConflictException("E-mail already exists")
         }
 
+        const role = await this.rolesRepository.findOne({
+            where: {
+                role: body.role
+            }
+        })
+
+        if(!role){
+            throw new NotFoundException(`Cannot link ${body.email} to ${body.role}`)
+        }
+
         const newUser = new users()
         newUser.name = body.name
         newUser.email = body.email
@@ -34,6 +47,7 @@ export class UsersService {
             body.password,
             +process.env.BCRYPT_SALT!
         )
+        newUser.roles = [role]
 
         try {
             await this.userRepository.save(newUser);
