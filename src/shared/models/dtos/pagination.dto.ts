@@ -5,7 +5,9 @@ import { IsInt, Max, Min } from 'class-validator';
 export class paginationDto {
   // An empty or missing query param ('page=' or omitted entirely) must fall
   // back to the default instead of reaching the service as NaN/0.
-  @Transform(({ value }) => (value === '' || value === undefined ? 1 : Number(value)))
+  @Transform(({ value }) =>
+    value === '' || value === undefined ? 1 : Number(value),
+  )
   @IsInt()
   @Min(1)
   @ApiProperty({
@@ -14,7 +16,9 @@ export class paginationDto {
   })
   page: number = 1;
 
-  @Transform(({ value }) => (value === '' || value === undefined ? 20 : Number(value)))
+  @Transform(({ value }) =>
+    value === '' || value === undefined ? 20 : Number(value),
+  )
   @IsInt()
   @Min(1)
   @Max(100)

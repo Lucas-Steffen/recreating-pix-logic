@@ -113,9 +113,8 @@ export class AuthService {
 
     const existingAdmin = await this.userRepository.findOne({
       where: {
-        emailBlindIndex: await this.blindIndexService.computeExactIndex(
-          adminEmail,
-        ),
+        emailBlindIndex:
+          await this.blindIndexService.computeExactIndex(adminEmail),
       },
     });
 

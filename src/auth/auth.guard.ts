@@ -1,4 +1,9 @@
-import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
@@ -11,8 +16,8 @@ export class AuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private reflector: Reflector,
-    private readonly userService: UsersService
-  ) { }
+    private readonly userService: UsersService,
+  ) {}
 
   async canActivate(context: ExecutionContext) {
     const req = context.switchToHttp().getRequest();
@@ -44,22 +49,25 @@ export class AuthGuard implements CanActivate {
         throw new UnauthorizedException();
       }
 
-      req["user"] = user;
+      req['user'] = user;
       context.switchToHttp().getResponse().locals.userId = user?.id;
 
       LogsContext.set({
         actorId: user.id,
-        actorRole: user.roles?.map((r) => r.role).join(",") ?? null,
+        actorRole: user.roles?.map((r) => r.role).join(',') ?? null,
       });
     } catch (err) {
-      console.error('[AuthGuard] error:', err instanceof Error ? err.message : err);
+      console.error(
+        '[AuthGuard] error:',
+        err instanceof Error ? err.message : err,
+      );
       throw new UnauthorizedException();
     }
     return true;
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
-    const [type, token] = request.headers.authorization?.split(" ") ?? [];
-    return type === "Bearer" ? token : undefined;
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 }

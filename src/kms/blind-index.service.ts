@@ -12,6 +12,8 @@ export class BlindIndexService {
 
   async computeTokenIndexes(value: string): Promise<string[]> {
     const tokens = tokenizeName(value);
-    return Promise.all(tokens.map((token) => this.kmsService.generateMac(token)));
+    return Promise.all(
+      tokens.map((token) => this.kmsService.generateMac(token)),
+    );
   }
 }

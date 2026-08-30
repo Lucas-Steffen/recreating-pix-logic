@@ -9,12 +9,8 @@ export class AddPiiEncryptionToUsers1788124125191 implements MigrationInterface 
   name = 'AddPiiEncryptionToUsers1788124125191';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(
-      `ALTER TABLE "users" ADD "piiCiphertext" text`,
-    );
-    await queryRunner.query(
-      `ALTER TABLE "users" ADD "dataKeyCiphertext" text`,
-    );
+    await queryRunner.query(`ALTER TABLE "users" ADD "piiCiphertext" text`);
+    await queryRunner.query(`ALTER TABLE "users" ADD "dataKeyCiphertext" text`);
     await queryRunner.query(
       `ALTER TABLE "users" ADD "emailBlindIndex" character varying(255)`,
     );
@@ -48,9 +44,15 @@ export class AddPiiEncryptionToUsers1788124125191 implements MigrationInterface 
     await queryRunner.query(
       `ALTER TABLE "users" DROP CONSTRAINT "UQ_users_emailBlindIndex"`,
     );
-    await queryRunner.query(`ALTER TABLE "users" DROP COLUMN "phoneBlindIndex"`);
-    await queryRunner.query(`ALTER TABLE "users" DROP COLUMN "emailBlindIndex"`);
-    await queryRunner.query(`ALTER TABLE "users" DROP COLUMN "dataKeyCiphertext"`);
+    await queryRunner.query(
+      `ALTER TABLE "users" DROP COLUMN "phoneBlindIndex"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "users" DROP COLUMN "emailBlindIndex"`,
+    );
+    await queryRunner.query(
+      `ALTER TABLE "users" DROP COLUMN "dataKeyCiphertext"`,
+    );
     await queryRunner.query(`ALTER TABLE "users" DROP COLUMN "piiCiphertext"`);
   }
 }
